@@ -35,6 +35,8 @@ export const Sidebar = ({
   const { status, data } = useSession()
   const router = useRouter()
 
+  const numToShow = 5
+
   const onClickGetStarted = () => {
     if (status === "authenticated") {
       router.push("/dashboard")
@@ -44,11 +46,11 @@ export const Sidebar = ({
   }
 
   const classes: { [key: number]: string } = {
-    0: "rounded-md absolute top-1/2 transform -translate-y-1/2 left-3 m-auto w-7 h-7 z-20",
-    1: "rounded-md absolute inset-0 m-auto w-12 h-12 z-30 transform -translate-x-12",
-    2: "absolute rounded-md top-0 bottom-0 left-0 right-0 m-auto z-40",
-    3: "rounded-md absolute inset-0 m-auto w-12 h-12 z-30 transform translate-x-12",
-    4: "rounded-md absolute right-3 top-1/2 transform -translate-y-1/2 m-auto w-7 h-7 z-20",
+    0: "absolute rounded-md top-0 bottom-0 left-0 right-0 m-auto w-16 h-16 z-40",
+    1: "absolute rounded-md inset-0 m-auto w-12 h-12 transform -translate-x-12 z-30",
+    2: "absolute rounded-md inset-0 m-auto w-12 h-12 transform translate-x-12 z-30",
+    3: "absolute rounded-md top-1/2 left-3 m-auto w-7 h-7 transform -translate-y-1/2 z-20",
+    4: "absolute rounded-md top-1/2 right-3 m-auto w-7 h-7 transform -translate-y-1/2 z-20",
   }
 
   const handleViewProfileClicked = () => {
@@ -85,16 +87,20 @@ export const Sidebar = ({
       {/* Explore projects */}
       <div className="flex flex-col items-center justify-center gap-y-3 p-6 border border-secondary bg-secondary rounded-xl">
         <div className="relative flex justify-center items-center py-4 w-full h-20">
-          {projects?.map((item, index) => (
-            <Image
-              key={item.id}
-              alt={item.name}
-              src={item.thumbnailUrl || ""}
-              width={28 + index * 20} // Adjusting size based on index
-              height={28 + index * 20} // Adjusting size based on index
-              className={classes[index]}
-            />
-          ))}
+          {projects?.map((item, index) => {
+            if (index >= numToShow) return
+
+            return (
+              <Image
+                key={item.id}
+                alt={item.name}
+                src={item.thumbnailUrl || ""}
+                width={28} // + index * 20} // Adjusting size based on index
+                height={28} // + index * 20} // Adjusting size based on index
+                className={classes[index]}
+              />
+            )
+          })}
         </div>
 
         <p className="text-sm font-normal text-secondary-foreground text-center">
